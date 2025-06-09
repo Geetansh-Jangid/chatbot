@@ -35,7 +35,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* MODIFICATION: Use dynamic viewport height for body as well */
             min-height: 100vh;
+            min-height: 100dvh;
             padding: 10px;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(100, 0, 255, 0.1) 0%, transparent 20%),
@@ -314,9 +316,21 @@
 
         /* Responsive design */
         @media (max-width: 768px) {
+            body {
+                padding: 0; /* Remove padding for full-screen mobile view */
+            }
             .container {
-                height: 100vh;
+                /*
+                MODIFICATION:
+                - Use 100dvh to fill the *visible* screen area, accounting for the browser's address bar.
+                - Add padding to the top and bottom to respect the "safe areas" on phones with notches
+                  and home bars. This pushes the header down so it's not hidden.
+                */
+                height: 100vh; /* Fallback for older browsers */
+                height: 100dvh;
                 border-radius: 0;
+                padding-top: env(safe-area-inset-top, 10px);
+                padding-bottom: env(safe-area-inset-bottom, 10px);
             }
 
             .header {
@@ -387,6 +401,7 @@
     </div>
 
     <script>
+        // ... YOUR JAVASCRIPT REMAINS UNCHANGED ...
         document.addEventListener('DOMContentLoaded', () => {
             const chatHistory = document.getElementById('chat-history');
             const userInput = document.getElementById('user-input');
